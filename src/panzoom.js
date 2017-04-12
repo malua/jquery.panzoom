@@ -7,6 +7,12 @@
  * https://github.com/timmywil/jquery.panzoom/blob/master/MIT-License.txt
  */
 
+function getChromeVersion () {     
+    var raw = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
+
+    return raw ? parseInt(raw[2], 10) : false;
+}
+
 (function(global, factory) {
 	// AMD
 	if (typeof define === 'function' && define.amd) {
@@ -937,13 +943,19 @@
 			var self = this;
 			var options = this.options;
 			var ns = options.eventNamespace;
-			var str_down = 'mousedown' + ns + ' pointerdown' + ns + ' MSPointerDown' + ns;
 			var str_start = 'touchstart' + ns + ' ' + str_down;
 			var str_click = 'touchend' + ns + ' click' + ns + ' pointerup' + ns + ' MSPointerUp' + ns;
 			var events = {};
 			var $reset = this.$reset;
 			var $zoomRange = this.$zoomRange;
-
+			var str_down;
+			if (getChromeVersion() >= 55 && 'ontouchstart' in window) {
+			    str_down = 'mousedown' + ns + ' MSPointerDown' + ns;
+			}
+			else {
+			    str_down = 'mousedown' + ns + ' pointerdown' + ns + ' MSPointerDown' + ns;
+			}
+			
 			// Bind panzoom events from options
 			$.each([ 'Start', 'Change', 'Zoom', 'Pan', 'End', 'Reset' ], function() {
 				var m = options[ 'on' + this ];
