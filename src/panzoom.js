@@ -1219,8 +1219,13 @@ function getChromeVersion () {
 						var middle = self._getMiddle(touches);
 						var diff = self._getDistance(touches) - startDistance;
 
+						var factor = 1.3;
+						if(distance < startDistance){
+							factor = 0.7;
+						}
+
 						// Set zoom
-						self.zoom(diff * (options.increment / 100) + startScale, {
+						self.zoom(diff * (options.increment / 30) * factor + startScale, {
 							focal: middle,
 							matrix: matrix,
 							animate: 'skip'
