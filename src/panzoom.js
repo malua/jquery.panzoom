@@ -557,16 +557,9 @@ function getChromeVersion () {
 				var zoomAspectW = conWidth / width;
 				var zoomAspectH = conHeight / height;
 
-				// If the element is not naturally centered,
-				// assume full space right
-				if (this.$parent.css('textAlign') !== 'center' || $.css(this.elem, 'display') !== 'inline') {
-					// offsetWidth gets us the width without the transform
-					scaleDiff = (width - this.elem.offsetWidth) / 2;
-					spaceWLeft = scaleDiff - dims.border.left;
-					spaceWRight = width - conWidth - scaleDiff + dims.border.right;
-				} else {
-					spaceWLeft = spaceWRight = ((width - conWidth) / 2);
-				}
+				// for SVG contain 'automatic'
+				spaceWLeft = spaceWRight = ((width - conWidth) / 2);
+
 				var spaceHTop = ((height - conHeight) / 2) + dims.border.top;
 				var spaceHBottom = ((height - conHeight) / 2) - dims.border.top - dims.border.bottom;
 
