@@ -7,7 +7,7 @@
  * https://github.com/timmywil/jquery.panzoom/blob/master/MIT-License.txt
  */
 
-function getChromeVersion () {     
+function getChromeVersion () {
     var raw = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
 
     return raw ? parseInt(raw[2], 10) : false;
@@ -315,6 +315,9 @@ function getChromeVersion () {
 
 		// Pan only when the scale is greater than minScale
 		panOnlyWhenZoomed: false,
+
+		// Whether to zoom from center of "full" image or center of "visible" image
+		zoomCenter: 'full',
 
 		// min and max zoom scales
 		minScale: 0.3,
@@ -742,7 +745,11 @@ function getChromeVersion () {
 				clientV = offsetM.x(surfaceM.x(surfaceV));
 				matrix[4] = +matrix[4] + (clientX - clientV.e(0));
 				matrix[5] = +matrix[5] + (clientY - clientV.e(1));
-			}
+			}else if (options.zoomCenter === 'visible') {
+				// Keep image centered on same coordinates
+				matrix[4] = +matrix[4] * scale / matrix[0];
+				matrix[5] = +matrix[5] * scale / matrix[0];
+ 			}
 
 			// Set the scale
 			matrix[0] = scale;
@@ -955,7 +962,7 @@ function getChromeVersion () {
 			else {
 			    str_down = 'mousedown' + ns + ' pointerdown' + ns + ' MSPointerDown' + ns;
 			}
-			
+
 			// Bind panzoom events from options
 			$.each([ 'Start', 'Change', 'Zoom', 'Pan', 'End', 'Reset' ], function() {
 				var m = options[ 'on' + this ];
